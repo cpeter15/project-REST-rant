@@ -26,4 +26,17 @@ router.get('/new', (req, res) => {
     res.render('places/new')
 })
 
+router.get('/:id', (req, res) => {
+    res.render('places/show');
+    if (isNaN(id)) {
+        res.render('error404');
+    } else if (!places[id]) {
+        res.render('error404');
+    } else {
+
+        res.render('places/show', { place: places[id] });
+    }
+})
+
+
 module.exports = router;
