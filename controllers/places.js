@@ -30,6 +30,16 @@ router.get('/new', (req, res) => {
     res.render('places/new')
 })
 
+router.get('/:id', (req, res) => {
+    db.Place.findById(req.params.id)
+        .then(place => {
+            res.render('places/show', { place })
+        })
+        .catch(err => {
+            console.log('err', err)
+            res.render('error404')
+        })
+})
 
 router.put('/:id', (req, res) => {
     let id = Number(req.params.id)
@@ -55,21 +65,6 @@ router.put('/:id', (req, res) => {
         // Save the new data into places[id]
         places[id] = req.body
         res.redirect(`/places/${id}`)
-    }
-})
-
-
-
-
-router.get('/:id', (req, res) => {
-    let id = Number(req.params.id);
-    if (isNaN(id)) {
-        res.render('error404');
-    } else if (!places[id]) {
-        res.render('error404');
-    } else {
-
-        res.render('places/show', { place: places[id], id });
     }
 })
 
