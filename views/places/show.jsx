@@ -2,6 +2,26 @@ const React = require('react')
 const Def = require('../default')
 
 function show(data) {
+    let comments = (
+        <h3 className="inactive">
+            No comments yet!
+        </h3>
+    )
+    if (data.place.comments.length) {
+        comments = data.place.comments.map(c => {
+            return (
+                <div className="border">
+                    <h2 className="rant">{c.rant ? 'Rant! 😡' : 'Rave! 😻'}</h2>
+                    <h4>{c.content}</h4>
+                    <h3>
+                        <stong>- {c.author}</stong>
+                    </h3>
+                    <h4>Rating: {c.stars}</h4>
+                </div>
+            )
+        })
+    }
+
     return (
         <Def>
             <main>
@@ -33,8 +53,29 @@ function show(data) {
                 </div>
                 <div>
                     <h2>Comments</h2>
-                    <p>comments unavailable</p>
+                    {comments}
                 </div>
+                <form method="POST" action={`/places/${data.id}/comment`}>
+                    <div className='form-group'>
+                        <label htmlFor="author">Author</label>
+                        <input className="form-control" id="author" name="author" required />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor="content">Comment</label>
+                        <textarea className="form-control" id="content" name="content" rows='4' col='50' required >
+
+                        </textarea>
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor="starRating">Star Rating</label>
+                        <input type='number' step='0.5' className="form-control" id="starRating" name="starRating" required />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor="rant">Rant</label>
+                        <input type='checkbox' id="rant" name="rant" required />
+                    </div>
+                    <input type="submit" value="Add Comment" />
+                </form>
             </main>
         </Def>
     )
