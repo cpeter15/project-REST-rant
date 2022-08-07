@@ -16,10 +16,14 @@ function show(data) {
         let sumRatings = data.place.comments.reduce((tot, c) => {
             return tot + c.stars
         }, 0)
-        let averageRating = sumRatings / data.place.comments.length
+        let averageRating = Math.round(sumRatings / data.place.comments.length)
+        let stars = ''
+        for (let i = 0; i < averageRating; i++) {
+            stars += '⭐'
+        }
         rating = (
             <h3>
-                {Math.round(averageRating)} stars
+                {stars} stars
             </h3>
         )
 
@@ -59,10 +63,10 @@ function show(data) {
                             Serving {data.place.cuisines}
                         </h4>
                     </div>
-                    <a href={`/places/${data.id}/edit`} className="btn btn-warning">
+                    <a href={`/places/${data.place._id}/edit`} className="btn btn-warning">
                         Edit
                     </a>
-                    <form method="POST" action={`/places/${data.id}?_method=DELETE`}>
+                    <form method="POST" action={`/places/${data.place._id}?_method=DELETE`}>
                         <button type="submit" className="btn btn-danger">
                             Delete
                         </button>
@@ -73,7 +77,7 @@ function show(data) {
                     <h2>Comments</h2>
                     {comments}
                 </div>
-                <form method="POST" action={`/places/${data.id}/comment`}>
+                <form method="POST" action={`/places/${data.place._id}/comment`}>
                     <div className='form-group'>
                         <label htmlFor="author">Author</label>
                         <input className="form-control" id="author" name="author" required />
@@ -85,12 +89,12 @@ function show(data) {
                         </textarea>
                     </div>
                     <div className='form-group'>
-                        <label htmlFor="starRating">Star Rating</label>
-                        <input type='number' step='0.5' className="form-control" id="starRating" name="starRating" required />
+                        <label htmlFor="stars">Star Rating</label>
+                        <input type='number' step='0.5' className="form-control" id="stars" name="stars" required />
                     </div>
                     <div className='form-group'>
                         <label htmlFor="rant">Rant</label>
-                        <input type='checkbox' id="rant" name="rant" required />
+                        <input type='checkbox' id="rant" name="rant" />
                     </div>
                     <input type="submit" value="Add Comment" />
                 </form>
